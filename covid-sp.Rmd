@@ -1,0 +1,69 @@
+---
+title: "Covid-19 - Estado de São Paulo"
+author: "Rodolfo Vick"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.width=18, fig.height=10) 
+library(pracma)
+```
+
+```{r}
+download.file("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/dados_covid_sp.csv", "dados_covid_sp.csv")
+file <- read.csv("/tmp/dados_covid_sp.csv", sep=";")
+cities <- unique(file$nome_munic)
+cname <- "São Paulo"
+```
+
+```{r}
+first <- TRUE
+for (i in 1:nrow(file)) {
+  if (identical(file[i, "nome_munic"], cname)){
+    d = as.Date(paste("2020-", toString(file[i, "mes"]), "-", toString(file[i, "dia"]), sep=""))
+    if (first) {
+      cdata <- data.frame("data"=d ,"casos"=file[i, "casos"], "casos_novos"=file[i, "casos_novos"] ,"obitos"=file[i, "obitos"], "obitos_novos"=file[i, "obitos_novos"])
+      first  <- FALSE
+    }
+    else {
+      dt = list(d, file[i, "casos"], file[i, "casos_novos"], file[i, "obitos"], file[i, "obitos_novos"])
+      cdata <- rbind(cdata, dt)  
+    }
+  }
+}
+```
+
+# Situação em `r cname` em `r as.character(cdata[nrow(cdata), "data"], "%d/%m/%Y")`
+
+Total de casos: `r cdata[nrow(cdata), "casos"]`
+
+Total de óbitos: `r cdata[nrow(cdata), "obitos"]`
+
+Taxa de mortalidade: `r cdata[nrow(cdata), "obitos"] * 100 / cdata[nrow(cdata), "casos"]`%
+
+## Casos por dia
+
+Número de casos por dia com média móvel:
+
+```{r}
+caseavg <- movavg(cdata$casos_novos, 15, "s")
+plot(cdata$data, cdata$casos_novos, type = "h", xlab = NA, ylab = NA, col="blue")
+lines(cdata$data, caseavg, col="red")
+max <- which.max(cdata$casos_novos)
+```
+
+O maior número de novos casos foi de `r cdata[max, "casos_novos"]` em `r as.character(cdata[max, "data"], "%d/%m/%Y")`.
+
+## Óbitos por dia
+
+Número de óbitos por dia com média móvel:
+
+```{r}
+deathavg <- movavg(cdata$obitos_novos, 15, "s")
+plot(cdata$data, cdata$obitos_novos, type = "h", xlab = NA, ylab = NA, col="blue")
+lines(cdata$data, deathavg, col="red")
+max <- which.max(cdata$obitos_novos)
+```
+
+O maior número de novos óbitos foi de `r cdata[max, "obitos_novos"]` em `r as.character(cdata[max, "data"], "%d/%m/%Y")`.
