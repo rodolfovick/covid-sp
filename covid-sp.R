@@ -30,6 +30,8 @@ ui <- fluidPage(
   textOutput("z_death"),
   textOutput("d_death"),
   
+  hr(),
+  p("2020 - Rodolfo Vick - rodolfo.vick at gmail.com"),
   br()
 )
 
@@ -102,13 +104,16 @@ server <- function(input, output, session) {
     if (cdata[days, "casos_novos"] == 0) {
       zc <- 1
       i <- days -1;
-      while (cdata[i, "casos_novos"] == 0) {
+      while ((cdata[i, "casos_novos"] == 0)  && i > 0) {
         i <- i-1
         zc <- zc+1
       }
       output$z_cases <- renderText({
         paste("Não houveram novos casos nos últimos ", zc, " dias.")
       })
+    }
+    else {
+      output$z_cases <- renderText({""})
     }
     
     if (diffcase > 0) {
@@ -144,13 +149,16 @@ server <- function(input, output, session) {
     if (cdata[days, "obitos_novos"] == 0) {
       zd <- 1
       i <- days -1;
-      while (cdata[i, "obitos_novos"] == 0) {
+      while ((cdata[i, "obitos_novos"] == 0) && i > 0) {
         i <- i-1
         zd <- zd+1
       }
       output$z_death <- renderText({
         paste("Não houveram novos óbitos nos últimos ", zd, " dias.")
       })
+    }
+    else {
+      output$z_death <- renderText({""})
     }
     
     if (diffdeath > 0) {
