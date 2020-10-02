@@ -130,13 +130,13 @@ server <- function(input, output, session) {
     if (diffcase > 0) {
       tc <- format(round(((caseavg[days]/caseavg[days - 7])-1)*100, 2), 2)
       output$d_cases <- renderText({
-        paste("A média móvel cresceu de ", format(round(caseavg[days - 7], 2), 2), " para ", format(round(caseavg[days], 2), 2), " na última semana, ", tc, "%.")
+        paste("A média móvel cresceu de ", format(round(caseavg[days - 7], 2), 2), " para ", format(round(caseavg[days], 2), 2), " nos últimos 7 dias, ", tc, "%.")
       })
     }
     else if (diffcase < 0) {
       tc <- format(round((1-(caseavg[days]/caseavg[days - 7]))*100, 2), 2)
       output$d_cases <- renderText({
-        paste("A média móvel diminuiu de ", format(round(caseavg[days - 7], 2), 2), " para ", format(round(caseavg[days], 2), 2), " na última semana, ", tc, "%.")
+        paste("A média móvel diminuiu de ", format(round(caseavg[days - 7], 2), 2), " para ", format(round(caseavg[days], 2), 2), " nos últimos 7 dias, ", tc, "%.")
       })
     }
     else {
@@ -175,13 +175,13 @@ server <- function(input, output, session) {
     if (diffdeath > 0) {
       td <- format(round(((deathavg[days]/deathavg[days - 7])-1)*100, 2), 2)
       output$d_death <- renderText({
-        paste("A média móvel cresceu de ", format(round(deathavg[days - 7], 2), 2), " para ", format(round(deathavg[days], 2), 2), " na última semana, ", td, "%.")
+        paste("A média móvel cresceu de ", format(round(deathavg[days - 7], 2), 2), " para ", format(round(deathavg[days], 2), 2), " nos últimos 7 dias, ", td, "%.")
       })
     }
     else if (diffdeath < 0) {
       td <- format(round((1-(deathavg[days]/deathavg[days - 7]))*100, 2), 2)
       output$d_death <- renderText({
-        paste("A média móvel diminuiu de ", format(round(deathavg[days - 7], 2), 2), " para ", format(round(deathavg[days], 2), 2), " na última semana, ", td, "%.")
+        paste("A média móvel diminuiu de ", format(round(deathavg[days - 7], 2), 2), " para ", format(round(deathavg[days], 2), 2), " nos últimos 7 dias, ", td, "%.")
       })
     }
     else {
