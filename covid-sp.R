@@ -251,7 +251,7 @@ server <- function(input, output, session) {
       plot(hdata$data, hdata$total_covid_uti_mm7d, type = "h", main = paste("Média móvel para 7 dias de ocupação de UTI\nRegião:", nome_drs), xlab = NA, ylab = NA, col="blue", ylim = c(hmin, hmax))
       par(new=TRUE)
       plot(hdata$data, hdata$pacientes_uti_mm7d, type = "h", xlab = NA, ylab = NA, col="red", ylim = c(hmin, hmax))
-      legend("topright", legend=c("Oferta de leitos", "Ocupação"), pch=15, col=c("blue", "red"))
+      legend("topright", legend=c("Oferta", "Ocupação"), pch=15, col=c("blue", "red"))
     })
     
     output$t_ocup <- renderText({
