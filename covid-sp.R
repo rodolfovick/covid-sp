@@ -37,6 +37,8 @@ ui <- fluidPage(
   plotOutput("p_uti"),
   textOutput("t_ocup"),
   
+  plotOutput("p_int"),
+  
   hr(),
   p("2020 - Rodolfo Vick - rodolfo.vick at gmail.com"),
   br()
@@ -199,27 +201,31 @@ server <- function(input, output, session) {
           if (first) {
             puti <- as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE))
             tuti <- as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE))
+            tint <- as.numeric(sub(",", ".", hospital[i, "internacoes_7d"], fixed = TRUE))
             for (j in 1:5) {
               puti <- puti + as.numeric(sub(",", ".", hospital[i + j, "pacientes_uti_mm7d"], fixed = TRUE))
               tuti <- tuti + as.numeric(sub(",", ".", hospital[i + j, "total_covid_uti_mm7d"], fixed = TRUE))
+              tint <- tint + as.numeric(sub(",", ".", hospital[i + j, "internacoes_7d"], fixed = TRUE))
             }
             
             mocup <- puti * 100 / tuti
             
-            hdata <- data.frame("data"=d , "pacientes_uti_mm7d"=puti, "total_covid_uti_mm7d"=tuti, "media_ocupacao"=mocup)
+            hdata <- data.frame("data"=d , "pacientes_uti_mm7d"=puti, "total_covid_uti_mm7d"=tuti, "media_ocupacao"=mocup, "internacoes_7d"=tint)
             first <- FALSE
           }
           else {
             puti <- as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE))
             tuti <- as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE))
+            tint <- as.numeric(sub(",", ".", hospital[i, "internacoes_7d"], fixed = TRUE))
             for (j in 1:5) {
               puti <- puti + as.numeric(sub(",", ".", hospital[i + j, "pacientes_uti_mm7d"], fixed = TRUE))
               tuti <- tuti + as.numeric(sub(",", ".", hospital[i + j, "total_covid_uti_mm7d"], fixed = TRUE))
+              tint <- tint + as.numeric(sub(",", ".", hospital[i + j, "internacoes_7d"], fixed = TRUE))
             }
             
             mocup <- puti * 100 / tuti
             
-            dt = list(d , puti, tuti, mocup)
+            dt = list(d , puti, tuti, mocup, tint)
             hdata <- rbind(hdata, dt)
           }
         }
@@ -230,18 +236,19 @@ server <- function(input, output, session) {
           if (first) {
             mocup <- as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)) * 100 / as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE))
             
-            hdata <- data.frame("data"=d , "pacientes_uti_mm7d"=as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)), "total_covid_uti_mm7d"=as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE)), "media_ocupacao"=mocup)
+            hdata <- data.frame("data"=d , "pacientes_uti_mm7d"=as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)), "total_covid_uti_mm7d"=as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE)), "media_ocupacao"=mocup, "internacoes_7d"=as.numeric(sub(",", ".", hospital[i, "internacoes_7d"], fixed = TRUE)))
             first <- FALSE
           }
           else {
             mocup <- as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)) * 100 / as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE))
             
-            dt = list(d , as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)), as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE)), mocup)
+            dt = list(d , as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)), as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE)), mocup, as.numeric(sub(",", ".", hospital[i, "internacoes_7d"], fixed = TRUE)))
             hdata <- rbind(hdata, dt)
           }
         }
       }
     }
+    hdays <- nrow(hdata)
     
     hmax <- max(c(max(hdata$total_covid_uti_mm7d), max(hdata$pacientes_uti_mm7d)))
     hmin <- min(c(min(hdata$total_covid_uti_mm7d), min(hdata$pacientes_uti_mm7d)))
@@ -258,6 +265,25 @@ server <- function(input, output, session) {
       paste("A maior taxa média de ocupação de UTI foi de ", format(round(hdata[ocupmax, "media_ocupacao"], 2), 2), "% em", as.character(hdata[ocupmax, "data"], "%d/%m/%Y"), "na região", nome_drs, ".")
     })
     
+    # New hospitalization
+    i <- (hdays - ((hdays %/% 7) * 7)) + 1
+    first <- TRUE
+    while (i < hdays) {
+      if (first) {
+        idata <- hdata[i, "data"]
+        inter <- hdata[i, "internacoes_7d"]
+        first <- FALSE
+      }
+      else {
+        idata <- append(idata, hdata[i, "data"])
+        inter <- append(inter, hdata[i, "internacoes_7d"])
+      }
+      i <- i + 7
+    }
+    
+    output$p_int <- renderPlot({
+      plot(idata, inter, type = "h", main = paste("Acumulado de novas internações em 7 dias\nRegião:", nome_drs), xlab = NA, ylab = NA, col="blue")
+    })
   })
 }
 
