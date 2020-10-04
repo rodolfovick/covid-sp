@@ -2,11 +2,11 @@ library(pracma)
 library(shiny)
 
 ## Get Covid data CSV
-download.file("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/dados_covid_sp.csv", "dados_covid_sp.csv")
+#download.file("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/dados_covid_sp.csv", "dados_covid_sp.csv")
 file <- read.csv("dados_covid_sp.csv", sep=";")
 cities <- unique(file$nome_munic)
 
-download.file("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/plano_sp_leitos_internacoes.csv", "plano_sp_leitos_internacoes.csv")
+#download.file("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/plano_sp_leitos_internacoes.csv", "plano_sp_leitos_internacoes.csv")
 hospital <- read.csv("plano_sp_leitos_internacoes.csv", sep=";")
 
 ui <- fluidPage(
