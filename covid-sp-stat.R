@@ -10,40 +10,40 @@ file <- read.csv("casos_obitos_doencas_preexistentes.csv", sep=";")
 
 general <- data.frame("casos"=integer(n), "obitos"=integer(n))
 
-gender <- data.frame("m_casos"=integer(n), "m_obitos"=integer(n), "m_pcasos"=numeric(n), "m_pobitos"=numeric(n), 
-                     "f_casos"=integer(n), "f_obitos"=integer(n), "f_pcasos"=numeric(n), "f_pobitos"=numeric(n))
+gender <- data.frame("m_casos"=integer(n), "m_obitos"=integer(n), "m_pcasos"=numeric(n), "m_pobitos"=numeric(n), "m_rate"=numeric(n),
+                     "f_casos"=integer(n), "f_obitos"=integer(n), "f_pcasos"=numeric(n), "f_pobitos"=numeric(n), "f_rate"=numeric(n))
 
-age <- data.frame( "aX"=integer(n),  "paX"=numeric(n),  "aX_obitos"=integer(n),  "paX_obitos"=numeric(n),
-                   "a0"=integer(n),  "pa0"=numeric(n),  "a0_obitos"=integer(n),  "pa0_obitos"=numeric(n),
-                  "a10"=integer(n), "pa10"=numeric(n), "a10_obitos"=integer(n), "pa10_obitos"=numeric(n), 
-                  "a20"=integer(n), "pa20"=numeric(n), "a20_obitos"=integer(n), "pa20_obitos"=numeric(n), 
-                  "a30"=integer(n), "pa30"=numeric(n), "a30_obitos"=integer(n), "pa30_obitos"=numeric(n), 
-                  "a40"=integer(n), "pa40"=numeric(n), "a40_obitos"=integer(n), "pa40_obitos"=numeric(n), 
-                  "a50"=integer(n), "pa50"=numeric(n), "a50_obitos"=integer(n), "pa50_obitos"=numeric(n), 
-                  "a60"=integer(n), "pa60"=numeric(n), "a60_obitos"=integer(n), "pa60_obitos"=numeric(n), 
-                  "a70"=integer(n), "pa70"=numeric(n), "a70_obitos"=integer(n), "pa70_obitos"=numeric(n), 
-                  "a80"=integer(n), "pa80"=numeric(n), "a80_obitos"=integer(n), "pa80_obitos"=numeric(n), 
-                  "a90"=integer(n), "pa90"=numeric(n), "a90_obitos"=integer(n), "pa90_obitos"=numeric(n))
+age <- data.frame( "aX"=integer(n),  "paX"=numeric(n),  "aX_obitos"=integer(n),  "paX_obitos"=numeric(n),  "paX_rate"=numeric(n),
+                   "a0"=integer(n),  "pa0"=numeric(n),  "a0_obitos"=integer(n),  "pa0_obitos"=numeric(n),  "pa0_rate"=numeric(n),
+                  "a10"=integer(n), "pa10"=numeric(n), "a10_obitos"=integer(n), "pa10_obitos"=numeric(n), "pa10_rate"=numeric(n), 
+                  "a20"=integer(n), "pa20"=numeric(n), "a20_obitos"=integer(n), "pa20_obitos"=numeric(n), "pa20_rate"=numeric(n), 
+                  "a30"=integer(n), "pa30"=numeric(n), "a30_obitos"=integer(n), "pa30_obitos"=numeric(n), "pa30_rate"=numeric(n), 
+                  "a40"=integer(n), "pa40"=numeric(n), "a40_obitos"=integer(n), "pa40_obitos"=numeric(n), "pa40_rate"=numeric(n), 
+                  "a50"=integer(n), "pa50"=numeric(n), "a50_obitos"=integer(n), "pa50_obitos"=numeric(n), "pa50_rate"=numeric(n), 
+                  "a60"=integer(n), "pa60"=numeric(n), "a60_obitos"=integer(n), "pa60_obitos"=numeric(n), "pa60_rate"=numeric(n), 
+                  "a70"=integer(n), "pa70"=numeric(n), "a70_obitos"=integer(n), "pa70_obitos"=numeric(n), "pa70_rate"=numeric(n), 
+                  "a80"=integer(n), "pa80"=numeric(n), "a80_obitos"=integer(n), "pa80_obitos"=numeric(n), "pa80_rate"=numeric(n), 
+                  "a90"=integer(n), "pa90"=numeric(n), "a90_obitos"=integer(n), "pa90_obitos"=numeric(n), "pa90_rate"=numeric(n))
 
-medical <- data.frame("asm"=integer(n), "pasm"=numeric(n), "asm_obitos"=integer(n), "pasm_obitos"=numeric(n),
-                      "crd"=integer(n), "pcrd"=numeric(n), "crd_obitos"=integer(n), "pcrd_obitos"=numeric(n),
-                      "dia"=integer(n), "pdia"=numeric(n), "dia_obitos"=integer(n), "pdia_obitos"=numeric(n),
-                      "hem"=integer(n), "phem"=numeric(n), "hem_obitos"=integer(n), "phem_obitos"=numeric(n),
-                      "hep"=integer(n), "phep"=numeric(n), "hep_obitos"=integer(n), "phep_obitos"=numeric(n),
-                      "neu"=integer(n), "pneu"=numeric(n), "neu_obitos"=integer(n), "pneu_obitos"=numeric(n),
-                      "ren"=integer(n), "pren"=numeric(n), "ren_obitos"=integer(n), "pren_obitos"=numeric(n),
-                      "imu"=integer(n), "pimu"=numeric(n), "imu_obitos"=integer(n), "pimu_obitos"=numeric(n),
-                      "obs"=integer(n), "pobs"=numeric(n), "obs_obitos"=integer(n), "pobs_obitos"=numeric(n),
-                      "pne"=integer(n), "ppne"=numeric(n), "pne_obitos"=integer(n), "ppne_obitos"=numeric(n),
-                      "pue"=integer(n), "ppue"=numeric(n), "pue_obitos"=integer(n), "ppue_obitos"=numeric(n),
-                      "dow"=integer(n), "pdow"=numeric(n), "dow_obitos"=integer(n), "pdow_obitos"=numeric(n),
-                      "out"=integer(n), "pout"=numeric(n), "out_obitos"=integer(n), "pout_obitos"=numeric(n),
-                      "ncp"=integer(n), "pncp"=numeric(n), "ncp_obitos"=integer(n), "pncp_obitos"=numeric(n),
-                      "m0"=integer(n), "pm0"=numeric(n), "m0_obitos"=integer(n), "pm0_obitos"=numeric(n),
-                      "m1"=integer(n), "pm1"=numeric(n), "m1_obitos"=integer(n), "pm1_obitos"=numeric(n),
-                      "m2"=integer(n), "pm2"=numeric(n), "m2_obitos"=integer(n), "pm2_obitos"=numeric(n),
-                      "m3"=integer(n), "pm3"=numeric(n), "m3_obitos"=integer(n), "pm3_obitos"=numeric(n),
-                      "m4"=integer(n), "pm4"=numeric(n), "m4_obitos"=integer(n), "pm4_obitos"=numeric(n))
+medical <- data.frame("asm"=integer(n), "pasm"=numeric(n), "asm_obitos"=integer(n), "pasm_obitos"=numeric(n), "pasm_rate"=numeric(n),
+                      "crd"=integer(n), "pcrd"=numeric(n), "crd_obitos"=integer(n), "pcrd_obitos"=numeric(n), "pcrd_rate"=numeric(n),
+                      "dia"=integer(n), "pdia"=numeric(n), "dia_obitos"=integer(n), "pdia_obitos"=numeric(n), "pdia_rate"=numeric(n),
+                      "hem"=integer(n), "phem"=numeric(n), "hem_obitos"=integer(n), "phem_obitos"=numeric(n), "phem_rate"=numeric(n),
+                      "hep"=integer(n), "phep"=numeric(n), "hep_obitos"=integer(n), "phep_obitos"=numeric(n), "phep_rate"=numeric(n),
+                      "neu"=integer(n), "pneu"=numeric(n), "neu_obitos"=integer(n), "pneu_obitos"=numeric(n), "pneu_rate"=numeric(n),
+                      "ren"=integer(n), "pren"=numeric(n), "ren_obitos"=integer(n), "pren_obitos"=numeric(n), "pren_rate"=numeric(n),
+                      "imu"=integer(n), "pimu"=numeric(n), "imu_obitos"=integer(n), "pimu_obitos"=numeric(n), "pimu_rate"=numeric(n),
+                      "obs"=integer(n), "pobs"=numeric(n), "obs_obitos"=integer(n), "pobs_obitos"=numeric(n), "pobs_rate"=numeric(n),
+                      "pne"=integer(n), "ppne"=numeric(n), "pne_obitos"=integer(n), "ppne_obitos"=numeric(n), "ppne_rate"=numeric(n),
+                      "pue"=integer(n), "ppue"=numeric(n), "pue_obitos"=integer(n), "ppue_obitos"=numeric(n), "ppue_rate"=numeric(n),
+                      "dow"=integer(n), "pdow"=numeric(n), "dow_obitos"=integer(n), "pdow_obitos"=numeric(n), "pdow_rate"=numeric(n),
+                      "out"=integer(n), "pout"=numeric(n), "out_obitos"=integer(n), "pout_obitos"=numeric(n), "pout_rate"=numeric(n),
+                      "ncp"=integer(n), "pncp"=numeric(n), "ncp_obitos"=integer(n), "pncp_obitos"=numeric(n), "pncp_rate"=numeric(n),
+                      "m0"=integer(n), "pm0"=numeric(n), "m0_obitos"=integer(n), "pm0_obitos"=numeric(n), "pm0_rate"=numeric(n),
+                      "m1"=integer(n), "pm1"=numeric(n), "m1_obitos"=integer(n), "pm1_obitos"=numeric(n), "pm1_rate"=numeric(n),
+                      "m2"=integer(n), "pm2"=numeric(n), "m2_obitos"=integer(n), "pm2_obitos"=numeric(n), "pm2_rate"=numeric(n),
+                      "m3"=integer(n), "pm3"=numeric(n), "m3_obitos"=integer(n), "pm3_obitos"=numeric(n), "pm3_rate"=numeric(n),
+                      "m4"=integer(n), "pm4"=numeric(n), "m4_obitos"=integer(n), "pm4_obitos"=numeric(n), "pm4_rate"=numeric(n))
 
 # Get data from all cities
 print("0 %")
@@ -333,71 +333,104 @@ for (j in 1:n) {
   # Update percentages 
   gender[j, "m_pcasos"] <- gender[j, "m_casos"] / general[j, "casos"] * 100
   gender[j, "m_pobitos"] <- gender[j, "m_obitos"] / general[j, "obitos"] * 100
+  gender[j, "m_rate"] <- gender[j, "m_obitos"] / gender[j, "m_casos"] * 100
+  
   gender[j, "f_pcasos"] <- gender[j, "f_casos"] / general[j, "casos"] * 100
   gender[j, "f_pobitos"] <- gender[j, "f_obitos"] / general[j, "obitos"] * 100
+  gender[j, "f_rate"] <- gender[j, "f_obitos"] / gender[j, "f_casos"] * 100
   
   age[j, "paX"] <- age[j, "aX"] / general[j, "casos"] * 100
   age[j, "paX_obitos"] <- age[j, "aX_obitos"] / general[j, "obitos"] * 100
+  age[j, "paX_rate"] <- age[j, "aX_obitos"] / age[j, "aX"] * 100
   age[j, "pa0"] <- age[j, "a0"] / general[j, "casos"] * 100
   age[j, "pa0_obitos"] <- age[j, "a0_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa0_rate"] <- age[j, "a0_obitos"] / age[j, "a0"] * 100
   age[j, "pa10"] <- age[j, "a10"] / general[j, "casos"] * 100
   age[j, "pa10_obitos"] <- age[j, "a10_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa10_rate"] <- age[j, "a10_obitos"] / age[j, "a10"] * 100
   age[j, "pa20"] <- age[j, "a20"] / general[j, "casos"] * 100
   age[j, "pa20_obitos"] <- age[j, "a20_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa20_rate"] <- age[j, "a20_obitos"] / age[j, "a20"] * 100
   age[j, "pa30"] <- age[j, "a30"] / general[j, "casos"] * 100
   age[j, "pa30_obitos"] <- age[j, "a30_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa30_rate"] <- age[j, "a30_obitos"] / age[j, "a30"] * 100
   age[j, "pa40"] <- age[j, "a40"] / general[j, "casos"] * 100
   age[j, "pa40_obitos"] <- age[j, "a40_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa40_rate"] <- age[j, "a40_obitos"] / age[j, "a40"] * 100
   age[j, "pa50"] <- age[j, "a50"] / general[j, "casos"] * 100
   age[j, "pa50_obitos"] <- age[j, "a50_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa50_rate"] <- age[j, "a50_obitos"] / age[j, "a50"] * 100
   age[j, "pa60"] <- age[j, "a60"] / general[j, "casos"] * 100
   age[j, "pa60_obitos"] <- age[j, "a60_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa60_rate"] <- age[j, "a60_obitos"] / age[j, "a60"] * 100
   age[j, "pa70"] <- age[j, "a70"] / general[j, "casos"] * 100
   age[j, "pa70_obitos"] <- age[j, "a70_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa70_rate"] <- age[j, "a70_obitos"] / age[j, "a70"] * 100
   age[j, "pa80"] <- age[j, "a80"] / general[j, "casos"] * 100
   age[j, "pa80_obitos"] <- age[j, "a80_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa80_rate"] <- age[j, "a80_obitos"] / age[j, "a80"] * 100
   age[j, "pa90"] <- age[j, "a90"] / general[j, "casos"] * 100
   age[j, "pa90_obitos"] <- age[j, "a90_obitos"] / general[j, "obitos"] * 100
+  age[j, "pa90_rate"] <- age[j, "a90_obitos"] / age[j, "a90"] * 100
   
   medical[j, "pasm"] <- medical[j, "asm"] / general[j, "casos"] * 100
   medical[j, "pasm_obitos"] <- medical[j, "asm_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pasm_rate"] <- medical[j, "asm_obitos"] / medical[j, "asm"] * 100
   medical[j, "pcrd"] <- medical[j, "crd"] / general[j, "casos"] * 100
   medical[j, "pcrd_obitos"] <- medical[j, "crd_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pcrd_rate"] <- medical[j, "crd_obitos"] / medical[j, "crd"] * 100
   medical[j, "pdia"] <- medical[j, "dia"] / general[j, "casos"] * 100
   medical[j, "pdia_obitos"] <- medical[j, "dia_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pdia_rate"] <- medical[j, "dia_obitos"] / medical[j, "dia"] * 100
   medical[j, "phem"] <- medical[j, "hem"] / general[j, "casos"] * 100
   medical[j, "phem_obitos"] <- medical[j, "hem_obitos"] / general[j, "obitos"] * 100
+  medical[j, "phem_rate"] <- medical[j, "hem_obitos"] / medical[j, "hem"] * 100
   medical[j, "phep"] <- medical[j, "hep"] / general[j, "casos"] * 100
   medical[j, "phep_obitos"] <- medical[j, "hep_obitos"] / general[j, "obitos"] * 100
+  medical[j, "phep_rate"] <- medical[j, "hep_obitos"] / medical[j, "hep"] * 100
   medical[j, "pneu"] <- medical[j, "neu"] / general[j, "casos"] * 100
   medical[j, "pneu_obitos"] <- medical[j, "neu_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pneu_rate"] <- medical[j, "neu_obitos"] / medical[j, "neu"] * 100
   medical[j, "pren"] <- medical[j, "ren"] / general[j, "casos"] * 100
   medical[j, "pren_obitos"] <- medical[j, "ren_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pren_rate"] <- medical[j, "ren_obitos"] / medical[j, "ren"] * 100
   medical[j, "pimu"] <- medical[j, "imu"] / general[j, "casos"] * 100
   medical[j, "pimu_obitos"] <- medical[j, "imu_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pimu_rate"] <- medical[j, "imu_obitos"] / medical[j, "imu"] * 100
   medical[j, "pobs"] <- medical[j, "obs"] / general[j, "casos"] * 100
   medical[j, "pobs_obitos"] <- medical[j, "obs_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pobs_rate"] <- medical[j, "obs_obitos"] / medical[j, "obs"] * 100
   medical[j, "ppne"] <- medical[j, "pne"] / general[j, "casos"] * 100
   medical[j, "ppne_obitos"] <- medical[j, "pne_obitos"] / general[j, "obitos"] * 100
+  medical[j, "ppne_rate"] <- medical[j, "pne_obitos"] / medical[j, "pne"] * 100
   medical[j, "ppue"] <- medical[j, "pue"] / general[j, "casos"] * 100
   medical[j, "ppue_obitos"] <- medical[j, "pue_obitos"] / general[j, "obitos"] * 100
+  medical[j, "ppue_rate"] <- medical[j, "pue_obitos"] / medical[j, "pue"] * 100
   medical[j, "pdow"] <- medical[j, "dow"] / general[j, "casos"] * 100
   medical[j, "pdow_obitos"] <- medical[j, "dow_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pdow_rate"] <- medical[j, "dow_obitos"] / medical[j, "dow"] * 100
   medical[j, "pout"] <- medical[j, "out"] / general[j, "casos"] * 100
   medical[j, "pout_obitos"] <- medical[j, "out_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pout_rate"] <- medical[j, "out_obitos"] / medical[j, "out"] * 100
   medical[j, "pncp"] <- medical[j, "ncp"] / general[j, "casos"] * 100
   medical[j, "pncp_obitos"] <- medical[j, "ncp_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pncp_rate"] <- medical[j, "ncp_obitos"] / medical[j, "ncp"] * 100
 
   medical[j, "pm0"] <- medical[j, "m0"] / general[j, "casos"] * 100
   medical[j, "pm0_obitos"] <- medical[j, "m0_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pm0_rate"] <- medical[j, "m0_obitos"] / medical[j, "m0"] * 100
   medical[j, "pm1"] <- medical[j, "m1"] / general[j, "casos"] * 100
   medical[j, "pm1_obitos"] <- medical[j, "m1_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pm1_rate"] <- medical[j, "m1_obitos"] / medical[j, "m1"] * 100
   medical[j, "pm2"] <- medical[j, "m2"] / general[j, "casos"] * 100
   medical[j, "pm2_obitos"] <- medical[j, "m2_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pm2_rate"] <- medical[j, "m2_obitos"] / medical[j, "m2"] * 100
   medical[j, "pm3"] <- medical[j, "m3"] / general[j, "casos"] * 100
   medical[j, "pm3_obitos"] <- medical[j, "m3_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pm3_rate"] <- medical[j, "m3_obitos"] / medical[j, "m3"] * 100
   medical[j, "pm4"] <- medical[j, "m4"] / general[j, "casos"] * 100
   medical[j, "pm4_obitos"] <- medical[j, "m4_obitos"] / general[j, "obitos"] * 100
+  medical[j, "pm4_rate"] <- medical[j, "m4_obitos"] / medical[j, "m4"] * 100
 }
 
 ui <- fluidPage(
@@ -405,7 +438,7 @@ ui <- fluidPage(
   selectInput("city", "Selecione a cidade", choices = cities, selected = "São Paulo"),
   
   textOutput("title", container = h2),
-  textOutput("general"),
+  tableOutput("general"),
   br(),
   
   textOutput("t_gender", container = h3),
@@ -437,8 +470,8 @@ server <- function(input, output, session) {
     output$title <- renderText({
       paste("Dados de ", input$city, " em ", as.character(day, "%d/%m/%Y"))
     })
-    output$general <- renderText({
-      paste("Casos:", general[j, "casos"], "Óbitos:",  general[j, "obitos"])
+    output$general <- renderTable({
+      data.frame("Casos"=general[j, "casos"], "Óbitos"=general[j, "obitos"])
     })
     
     # Gender
@@ -450,7 +483,8 @@ server <- function(input, output, session) {
                  "Casos"=c(gender[j, "m_casos"], gender[j, "f_casos"]), 
                  'Casos %'=c(gender[j, "m_pcasos"], gender[j, "f_pcasos"]),
                  "Óbitos"=c(gender[j, "m_obitos"], gender[j, "f_obitos"]),
-                 'Óbitos %'=c(gender[j, "m_pobitos"], gender[j, "f_pobitos"]), 
+                 'Óbitos %'=c(gender[j, "m_pobitos"], gender[j, "f_pobitos"]),
+                 'Mortalidade %'=c(gender[j, "m_rate"], gender[j, "f_rate"]), 
                  check.names=FALSE)
     }, rownames=TRUE)
     
@@ -463,7 +497,8 @@ server <- function(input, output, session) {
                  "Casos"=c(age[j, "a0"], age[j, "a10"], age[j, "a20"], age[j, "a30"], age[j, "a40"], age[j, "a50"], age[j, "a60"], age[j, "a70"], age[j, "a80"], age[j, "a90"], age[j, "aX"]), 
                  'Casos %'=c(age[j, "pa0"], age[j, "pa10"], age[j, "pa20"], age[j, "pa30"], age[j, "pa40"], age[j, "pa50"], age[j, "pa60"], age[j, "pa70"], age[j, "pa80"], age[j, "pa90"], age[j, "paX"]),
                  "Óbitos"=c(age[j, "a0_obitos"], age[j, "a10_obitos"], age[j, "a20_obitos"], age[j, "a30_obitos"], age[j, "a40_obitos"], age[j, "a50_obitos"], age[j, "a60_obitos"], age[j, "a70_obitos"], age[j, "a80_obitos"], age[j, "a90_obitos"], age[j, "aX_obitos"]),
-                 'Óbitos %'=c(age[j, "pa0_obitos"], age[j, "pa10_obitos"], age[j, "pa20_obitos"], age[j, "pa30_obitos"], age[j, "pa40_obitos"], age[j, "pa50_obitos"], age[j, "pa60_obitos"], age[j, "pa70_obitos"], age[j, "pa80_obitos"], age[j, "pa90_obitos"], age[j, "paX_obitos"]), 
+                 'Óbitos %'=c(age[j, "pa0_obitos"], age[j, "pa10_obitos"], age[j, "pa20_obitos"], age[j, "pa30_obitos"], age[j, "pa40_obitos"], age[j, "pa50_obitos"], age[j, "pa60_obitos"], age[j, "pa70_obitos"], age[j, "pa80_obitos"], age[j, "pa90_obitos"], age[j, "paX_obitos"]),
+                 'Mortalidade %'=c(age[j, "pa0_rate"], age[j, "pa10_rate"], age[j, "pa20_rate"], age[j, "pa30_rate"], age[j, "pa40_rate"], age[j, "pa50_rate"], age[j, "pa60_rate"], age[j, "pa70_rate"], age[j, "pa80_rate"], age[j, "pa90_rate"], age[j, "paX_rate"]),
                  check.names=FALSE)
     }, rownames=TRUE)
     
@@ -472,11 +507,12 @@ server <- function(input, output, session) {
       "Condições médicas pré-existentes"
     })
     output$medical <- renderTable({
-      data.frame(row.names = c("Asma", "Cardiopatia", "Diabetes", "Doença Hematológica", "Doença Hepática", "Doença Neurológica", "Doenca Renal", "Imunodepressão", "Obesidade", "Pneumopatia", "Puérpera", "Síndrome de Down", "Outros", "Nenhuma condição pré-existente"),
+      data.frame(row.names = c("Asma", "Cardiopatia", "Diabetes", "Doença Hematológica", "Doença Hepática", "Doença Neurológica", "Doença Renal", "Imunodepressão", "Obesidade", "Pneumopatia", "Puérpera", "Síndrome de Down", "Outros", "Nenhuma condição pré-existente"),
                  "Casos"=c(medical[j, "asm"], medical[j, "crd"], medical[j, "dia"], medical[j, "hem"], medical[j, "hep"], medical[j, "neu"], medical[j, "ren"], medical[j, "imu"], medical[j, "obs"], medical[j, "pne"], medical[j, "pue"], medical[j, "dow"], medical[j, "out"], medical[j, "ncp"]), 
                  'Casos %'=c(medical[j, "pasm"], medical[j, "pcrd"], medical[j, "pdia"], medical[j, "phem"], medical[j, "phep"], medical[j, "pneu"], medical[j, "pren"], medical[j, "pimu"], medical[j, "pobs"], medical[j, "ppne"], medical[j, "ppue"], medical[j, "pdow"], medical[j, "pout"], medical[j, "pncp"]),
                  "Óbitos"=c(medical[j, "asm_obitos"], medical[j, "crd_obitos"], medical[j, "dia_obitos"], medical[j, "hem_obitos"], medical[j, "hep_obitos"], medical[j, "neu_obitos"], medical[j, "ren_obitos"], medical[j, "imu_obitos"], medical[j, "obs_obitos"], medical[j, "pne_obitos"], medical[j, "pue_obitos"], medical[j, "dow_obitos"], medical[j, "out_obitos"], medical[j, "ncp_obitos"]),
                  'Óbitos %'=c(medical[j, "pasm_obitos"], medical[j, "pcrd_obitos"], medical[j, "pdia_obitos"], medical[j, "phem_obitos"], medical[j, "phep_obitos"], medical[j, "pneu_obitos"], medical[j, "pren_obitos"], medical[j, "pimu_obitos"], medical[j, "pobs_obitos"], medical[j, "ppne_obitos"], medical[j, "ppue_obitos"], medical[j, "pdow_obitos"], medical[j, "pout_obitos"], medical[j, "pncp_obitos"]), 
+                 'Mortalidade %'=c(medical[j, "pasm_rate"], medical[j, "pcrd_rate"], medical[j, "pdia_rate"], medical[j, "phem_rate"], medical[j, "phep_rate"], medical[j, "pneu_rate"], medical[j, "pren_rate"], medical[j, "pimu_rate"], medical[j, "pobs_rate"], medical[j, "ppne_rate"], medical[j, "ppue_rate"], medical[j, "pdow_rate"], medical[j, "pout_rate"], medical[j, "pncp_rate"]), 
                  check.names=FALSE)
     }, rownames=TRUE)
     
@@ -489,10 +525,11 @@ server <- function(input, output, session) {
                  'Casos %'=c(medical[j, "pm0"], medical[j, "pm1"], medical[j, "pm2"], medical[j, "pm3"], medical[j, "pm4"]),
                  "Óbitos"=c(medical[j, "m0_obitos"], medical[j, "m1_obitos"], medical[j, "m2_obitos"], medical[j, "m3_obitos"], medical[j, "m4_obitos"]),
                  'Óbitos %'=c(medical[j, "pm0_obitos"], medical[j, "pm1_obitos"], medical[j, "pm2_obitos"], medical[j, "pm3_obitos"], medical[j, "pm4_obitos"]), 
+                 'Mortalidade %'=c(medical[j, "pm0_rate"], medical[j, "pm1_rate"], medical[j, "pm2_rate"], medical[j, "pm3_rate"], medical[j, "pm4_rate"]),
                  check.names=FALSE)
     }, rownames=TRUE)
   })
 }
 
 app <- shinyApp(ui, server)
-runApp(app, port = 3072, host = "0.0.0.0")
+runApp(app, port = 3074, host = "0.0.0.0")
