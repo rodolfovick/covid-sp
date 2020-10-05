@@ -74,13 +74,13 @@ server <- function(input, output, session) {
       paste("População:", pop, "hab. Área: ", area, "Km2. Densidade:", format(round(pop / area, 2), nsmall = 2), "hab/Km2.")
     })
     output$drsname <- renderText({
-      paste("Região:", nome_drs)
+      paste("Região:", nome_drs, ".")
     })
     output$cases <- renderText({
-      paste("Total de casos:", cdata[days, "casos"], ".")
+      paste("Total de casos:", cdata[days, "casos"], ". No último dia:", cdata[days, "casos_novos"], ".")
     })
     output$death <- renderText({
-      paste("Total de óbitos:", cdata[days, "obitos"], ".")
+      paste("Total de óbitos:", cdata[days, "obitos"], ". No último dia:", cdata[days, "obitos_novos"], ".")
     })
     output$rate <- renderText({
       paste("Taxa de mortalidade:", format(round(cdata[days, "obitos"] * 100 / cdata[days, "casos"], 2), nsmall = 2), "%.")
@@ -266,9 +266,9 @@ server <- function(input, output, session) {
     })
     
     # New hospitalization
-    i <- (hdays - ((hdays %/% 7) * 7)) + 1
+    i <- (hdays - ((hdays %/% 7) * 7)) + 7
     first <- TRUE
-    while (i < hdays) {
+    while (i <= hdays) {
       if (first) {
         idata <- hdata[i, "data"]
         inter <- hdata[i, "internacoes_7d"]
