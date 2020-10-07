@@ -73,5 +73,5 @@ while true; do
     echo Last commit date: $last
     echo
   fi
-  sleep 3600
+  sleep 1800
 done
