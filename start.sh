@@ -27,7 +27,7 @@ function start {
   rm casos_obitos_doencas_preexistentes.csv.zip
   
   # Start main script
-  Rscript covid-sp.R &
+  Rscript covid-sp-state.R &
   pid1=$!
   
   # Start stats script
