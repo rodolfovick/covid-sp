@@ -66,13 +66,13 @@ hdata <- list(data.frame("data"=as.Date("1970-01-01") , "pacientes_uti_mm7d"=0, 
 for (i in 2:nn) {
   hdata[[i]] <- data.frame("data"=as.Date("1970-01-01") , "pacientes_uti_mm7d"=0, "total_covid_uti_mm7d"=0, "media_ocupacao"=0, "internacoes_7d"=0L)
 }
-first <- rep(TRUE, n)
+first <- rep(TRUE, nn)
 
 print("0 %")
 fs <- 1
 for (i in 1:nrow(hospital)) {
   # File lookup status
-  file_status = i / nrow(file)*100
+  file_status = i / nrow(hospital)*100
   if (file_status >= 10 * fs ){
     print(paste(as.integer(file_status), "%"))
     fs <- fs + 1
@@ -139,6 +139,30 @@ for (i in 1:nrow(hospital)) {
       dt = list(d , as.numeric(sub(",", ".", hospital[i, "pacientes_uti_mm7d"], fixed = TRUE)), as.numeric(sub(",", ".", hospital[i, "total_covid_uti_mm7d"], fixed = TRUE)), mocup, as.numeric(sub(",", ".", hospital[i, "internacoes_7d"], fixed = TRUE)))
       hdata[[j]] <- rbind(hdata[[j]], dt)
     }
+  }
+}
+
+idata <- list(data.frame("data"=as.Date("1970-01-01"), "internacoes_7d"=0L))
+for (i in 2:nn) {
+  idata[[i]] <- data.frame("data"=as.Date("1970-01-01"), "internacoes_7d"=0L)
+}
+first <- rep(TRUE, nn)
+
+for (j in 1:nn) {
+  hdays <- nrow(hdata[[j]])
+  
+  i <- (hdays - ((hdays %/% 7) * 7)) + 7
+  while (i <= hdays) {
+    if (first[[j]]) {
+      idata[[j]][1, "data"] <- hdata[[j]][i, "data"]
+      idata[[j]][1, "internacoes_7d"] <- hdata[[j]][i, "internacoes_7d"]
+      first[[j]] <- FALSE
+    }
+    else {
+      dt = list(hdata[[j]][i, "data"], hdata[[j]][i, "internacoes_7d"])
+      idata[[j]] <- rbind(idata[[j]], dt)
+    }
+    i <- i + 7
   }
 }
 
@@ -326,23 +350,8 @@ server <- function(input, output, session) {
     })
 
     # New hospitalization
-    i <- (hdays - ((hdays %/% 7) * 7)) + 7
-    f <- TRUE
-    while (i <= hdays) {
-      if (f) {
-        idata <- hdata[[k]][i, "data"]
-        inter <- hdata[[k]][i, "internacoes_7d"]
-        f <- FALSE
-      }
-      else {
-        idata <- append(idata, hdata[[k]][i, "data"])
-        inter <- append(inter, hdata[[k]][i, "internacoes_7d"])
-      }
-      i <- i + 7
-    }
-
     output$p_int <- renderPlot({
-      plot(idata, inter, type = "h", main = paste("Acumulado de novas internações em 7 dias\nRegião:", nome_drs[j]), xlab = NA, ylab = NA, col="blue")
+      plot(idata[[k]]$data, idata[[k]]$internacoes_7d, type = "h", main = paste("Acumulado de novas internações em 7 dias\nRegião:", nome_drs[j]), xlab = NA, ylab = NA, col="blue")
     })
   })
 }
