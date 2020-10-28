@@ -330,15 +330,15 @@ for (i in 1:nrow(file)) {
 }
 
 for (j in 1:n) {
-  # Update percentages 
+  # Update percentages
   gender[j, "m_pcasos"] <- gender[j, "m_casos"] / general[j, "casos"] * 100
   gender[j, "m_pobitos"] <- gender[j, "m_obitos"] / general[j, "obitos"] * 100
   gender[j, "m_rate"] <- gender[j, "m_obitos"] / gender[j, "m_casos"] * 100
-  
+
   gender[j, "f_pcasos"] <- gender[j, "f_casos"] / general[j, "casos"] * 100
   gender[j, "f_pobitos"] <- gender[j, "f_obitos"] / general[j, "obitos"] * 100
   gender[j, "f_rate"] <- gender[j, "f_obitos"] / gender[j, "f_casos"] * 100
-  
+
   age[j, "paX"] <- age[j, "aX"] / general[j, "casos"] * 100
   age[j, "paX_obitos"] <- age[j, "aX_obitos"] / general[j, "obitos"] * 100
   age[j, "paX_rate"] <- age[j, "aX_obitos"] / age[j, "aX"] * 100
@@ -372,7 +372,7 @@ for (j in 1:n) {
   age[j, "pa90"] <- age[j, "a90"] / general[j, "casos"] * 100
   age[j, "pa90_obitos"] <- age[j, "a90_obitos"] / general[j, "obitos"] * 100
   age[j, "pa90_rate"] <- age[j, "a90_obitos"] / age[j, "a90"] * 100
-  
+
   medical[j, "pasm"] <- medical[j, "asm"] / general[j, "casos"] * 100
   medical[j, "pasm_obitos"] <- medical[j, "asm_obitos"] / general[j, "obitos"] * 100
   medical[j, "pasm_rate"] <- medical[j, "asm_obitos"] / medical[j, "asm"] * 100
@@ -433,9 +433,42 @@ for (j in 1:n) {
   medical[j, "pm4_rate"] <- medical[j, "m4_obitos"] / medical[j, "m4"] * 100
 }
 
+# State data
+s_general <- data.frame("Casos"=sum(general$casos), "Óbitos"=sum(general$obitos))
+s_gender <- data.frame(row.names = c("Masculino", "Feminino"),
+                       "Casos"=c(sum(gender$m_casos), sum(gender$f_casos)),
+                       'Casos %'=c(sum(gender$m_casos)*100/s_general$Casos, sum(gender$f_casos)*100/s_general$Casos),
+                       "Óbitos"=c(sum(gender$m_obitos), sum(gender$f_obitos)),
+                       'Óbitos %'=c(sum(gender$m_obitos)*100/s_general$Óbitos, sum(gender$f_obitos)*100/s_general$Óbitos),
+                       'Mortalidade %'=c(sum(gender$m_obitos)*100/sum(gender$m_casos), sum(gender$f_obitos)*100/sum(gender$m_casos)),
+                       check.names=FALSE)
+s_age <- data.frame(row.names = c("0 a 9", "10 a 19", "20 a 29", "30 a 39", "40 a 49", "50 a 59", "60 a 69", "70 a 79", "80 a 89", "90 ou mais", "Sem idade declarada"),
+           "Casos"=c(sum(age$a0), sum(age$a10), sum(age$a20), sum(age$a30), sum(age$a40), sum(age$a50), sum(age$a60), sum(age$a70), sum(age$a80), sum(age$a90), sum(age$aX)), 
+           'Casos %'=c(sum(age$a0)*100/s_general$Casos, sum(age$a10)*100/s_general$Casos, sum(age$a20)*100/s_general$Casos, sum(age$a30)*100/s_general$Casos, sum(age$a40)*100/s_general$Casos, sum(age$a50)*100/s_general$Casos, sum(age$a60)*100/s_general$Casos, sum(age$a70)*100/s_general$Casos, sum(age$a80)*100/s_general$Casos, sum(age$a90)*100/s_general$Casos, sum(age$aX)*100/s_general$Casos),
+           "Óbitos"=c(sum(age$a0_obitos), sum(age$a10_obitos), sum(age$a20_obitos), sum(age$a30_obitos), sum(age$a40_obitos), sum(age$a50_obitos), sum(age$a60_obitos), sum(age$a70_obitos), sum(age$a80_obitos), sum(age$a90_obitos), sum(age$aX_obitos)),
+           'Óbitos %'=c(sum(age$a0_obitos)*100/s_general$Óbitos, sum(age$a10_obitos)*100/s_general$Óbitos, sum(age$a20_obitos)*100/s_general$Óbitos, sum(age$a30_obitos)*100/s_general$Óbitos, sum(age$a40_obitos)*100/s_general$Óbitos, sum(age$a50_obitos)*100/s_general$Óbitos, sum(age$a60_obitos)*100/s_general$Óbitos, sum(age$a70_obitos)*100/s_general$Óbitos, sum(age$a80_obitos)*100/s_general$Óbitos, sum(age$a90_obitos)*100/s_general$Óbitos, sum(age$aX_obitos)*100/s_general$Óbitos),
+           'Mortalidade %'=c(sum(age$a0_obitos)*100/sum(age$a0), sum(age$a10_obitos)*100/sum(age$a10), sum(age$a20_obitos)*100/sum(age$a20), sum(age$a30_obitos)*100/sum(age$a30), sum(age$a40_obitos)*100/sum(age$a40), sum(age$a50_obitos)*100/sum(age$a50), sum(age$a60_obitos)*100/sum(age$a60), sum(age$a70_obitos)*100/sum(age$a70), sum(age$a80_obitos)*100/sum(age$a80), sum(age$a90_obitos)*100/sum(age$a90), sum(age$aX_obitos)*100/sum(age$aX0)),
+           check.names=FALSE)
+
+s_medical <- data.frame(row.names = c("Asma", "Cardiopatia", "Diabetes", "Doença Hematológica", "Doença Hepática", "Doença Neurológica", "Doença Renal", "Imunodepressão", "Obesidade", "Pneumopatia", "Puérpera", "Síndrome de Down", "Outros", "Nenhuma condição pré-existente"),
+                        "Casos"=c(sum(medical$asm), sum(medical$crd), sum(medical$dia), sum(medical$hem), sum(medical$hep), sum(medical$neu), sum(medical$ren), sum(medical$imu), sum(medical$obs), sum(medical$pne), sum(medical$pue), sum(medical$dow), sum(medical$out), sum(medical$ncp)), 
+                        'Casos %'=c(sum(medical$asm)*100/s_general$Casos, sum(medical$crd)*100/s_general$Casos, sum(medical$dia)*100/s_general$Casos, sum(medical$hem)*100/s_general$Casos, sum(medical$hep)*100/s_general$Casos, sum(medical$neu)*100/s_general$Casos, sum(medical$ren)*100/s_general$Casos, sum(medical$imu)*100/s_general$Casos, sum(medical$obs)*100/s_general$Casos, sum(medical$pne)*100/s_general$Casos, sum(medical$pue)*100/s_general$Casos, sum(medical$dow)*100/s_general$Casos, sum(medical$out)*100/s_general$Casos, sum(medical$ncp)*100/s_general$Casos),
+                        "Óbitos"=c(sum(medical$asm_obitos), sum(medical$crd_obitos), sum(medical$dia_obitos), sum(medical$hem_obitos), sum(medical$hep_obitos), sum(medical$neu_obitos), sum(medical$ren_obitos), sum(medical$imu_obitos), sum(medical$obs_obitos), sum(medical$pne_obitos), sum(medical$pue_obitos), sum(medical$dow_obitos), sum(medical$out_obitos), sum(medical$ncp_obitos)),
+                        'Óbitos %'=c(sum(medical$asm_obitos)*100/s_general$Óbitos, sum(medical$crd_obitos)*100/s_general$Óbitos, sum(medical$dia_obitos)*100/s_general$Óbitos, sum(medical$hem_obitos)*100/s_general$Óbitos, sum(medical$hep_obitos)*100/s_general$Óbitos, sum(medical$neu_obitos)*100/s_general$Óbitos, sum(medical$ren_obitos)*100/s_general$Óbitos, sum(medical$imu_obitos)*100/s_general$Óbitos, sum(medical$obs_obitos)*100/s_general$Óbitos, sum(medical$pne_obitos)*100/s_general$Óbitos, sum(medical$pue_obitos)*100/s_general$Óbitos, sum(medical$dow_obitos)*100/s_general$Óbitos, sum(medical$out_obitos)*100/s_general$Óbitos, sum(medical$ncp_obitos)*100/s_general$Óbitos), 
+                        'Mortalidade %'=c(sum(medical$asm_obitos)*100/sum(medical$asm), sum(medical$crd_obitos)*100/sum(medical$crd), sum(medical$dia_obitos)*100/sum(medical$dia), sum(medical$hem_obitos)*100/sum(medical$hem), sum(medical$hep_obitos)*100/sum(medical$hep), sum(medical$neu_obitos)*100/sum(medical$neu), sum(medical$ren_obitos)*100/sum(medical$ren), sum(medical$imu_obitos)*100/sum(medical$imu), sum(medical$obs_obitos)*100/sum(medical$obs), sum(medical$pne_obitos)*100/sum(medical$pne), sum(medical$pue_obitos)*100/sum(medical$pue), sum(medical$dow_obitos)*100/sum(medical$dow), sum(medical$out_obitos)*100/sum(medical$out), sum(medical$ncp_obitos)*100/sum(medical$ncp)), 
+                        check.names=FALSE)
+
+s_nmedical <- data.frame(row.names = c("Nenhuma", "1", "2", "3", "4 ou mais"),
+                         "Casos"=c(sum(medical$m0), sum(medical$m1), sum(medical$m2), sum(medical$m3), sum(medical$m4)), 
+                         'Casos %'=c(sum(medical$m0)*100/s_general$Casos, sum(medical$m1)*100/s_general$Casos, sum(medical$m2)*100/s_general$Casos, sum(medical$m3)*100/s_general$Casos, sum(medical$m4)*100/s_general$Casos),
+                         "Óbitos"=c(sum(medical$m0_obitos), sum(medical$m1_obitos), sum(medical$m2_obitos), sum(medical$m3_obitos), sum(medical$m4_obitos)),
+                         'Óbitos %'=c(sum(medical$m0_obitos)*100/s_general$Óbitos, sum(medical$m1_obitos)*100/s_general$Óbitos, sum(medical$m2_obitos)*100/s_general$Óbitos, sum(medical$m3_obitos)*100/s_general$Óbitos, sum(medical$m4_obitos)*100/s_general$Óbitos), 
+                         'Mortalidade %'=c(sum(medical$m0_obitos)*100/sum(medical$m0), sum(medical$m1_obitos)*100/sum(medical$m1), sum(medical$m2_obitos)*100/sum(medical$m2), sum(medical$m3_obitos)*100/sum(medical$m3), sum(medical$m4_obitos)*100/sum(medical$m4)),
+                         check.names=FALSE)
+
 ui <- fluidPage(
   titlePanel("Covid-19 SP - Estatísticas"),
-  selectInput("city", "Selecione a cidade", choices = cities, selected = "São Paulo"),
+  selectInput("city", "Selecione a localidade", choices = c("Estado", cities), selected = "Estado"),
   
   textOutput("title", container = h2),
   tableOutput("general"),
@@ -463,71 +496,116 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  # Get data
   observe({
-    j <- match(input$city, cities)
     #General
-    output$title <- renderText({
-      paste("Dados de ", input$city, " em ", as.character(day, "%d/%m/%Y"))
-    })
-    output$general <- renderTable({
-      data.frame("Casos"=general[j, "casos"], "Óbitos"=general[j, "obitos"])
-    })
-    
-    # Gender
-    output$t_gender <- renderText({
-      "Dados por sexo"
-    })
-    output$gender <- renderTable({
-      data.frame(row.names = c("Masculino", "Feminino"), 
-                 "Casos"=c(gender[j, "m_casos"], gender[j, "f_casos"]), 
-                 'Casos %'=c(gender[j, "m_pcasos"], gender[j, "f_pcasos"]),
-                 "Óbitos"=c(gender[j, "m_obitos"], gender[j, "f_obitos"]),
-                 'Óbitos %'=c(gender[j, "m_pobitos"], gender[j, "f_pobitos"]),
-                 'Mortalidade %'=c(gender[j, "m_rate"], gender[j, "f_rate"]), 
-                 check.names=FALSE)
-    }, rownames=TRUE)
-    
-    # Age
-    output$t_age <- renderText({
-      "Dados por idade"
-    })
-    output$age <- renderTable({
-      data.frame(row.names = c("0 a 9", "10 a 19", "20 a 29", "30 a 39", "40 a 49", "50 a 59", "60 a 69", "70 a 79", "80 a 89", "90 ou mais", "Sem idade declarada"),
-                 "Casos"=c(age[j, "a0"], age[j, "a10"], age[j, "a20"], age[j, "a30"], age[j, "a40"], age[j, "a50"], age[j, "a60"], age[j, "a70"], age[j, "a80"], age[j, "a90"], age[j, "aX"]), 
-                 'Casos %'=c(age[j, "pa0"], age[j, "pa10"], age[j, "pa20"], age[j, "pa30"], age[j, "pa40"], age[j, "pa50"], age[j, "pa60"], age[j, "pa70"], age[j, "pa80"], age[j, "pa90"], age[j, "paX"]),
-                 "Óbitos"=c(age[j, "a0_obitos"], age[j, "a10_obitos"], age[j, "a20_obitos"], age[j, "a30_obitos"], age[j, "a40_obitos"], age[j, "a50_obitos"], age[j, "a60_obitos"], age[j, "a70_obitos"], age[j, "a80_obitos"], age[j, "a90_obitos"], age[j, "aX_obitos"]),
-                 'Óbitos %'=c(age[j, "pa0_obitos"], age[j, "pa10_obitos"], age[j, "pa20_obitos"], age[j, "pa30_obitos"], age[j, "pa40_obitos"], age[j, "pa50_obitos"], age[j, "pa60_obitos"], age[j, "pa70_obitos"], age[j, "pa80_obitos"], age[j, "pa90_obitos"], age[j, "paX_obitos"]),
-                 'Mortalidade %'=c(age[j, "pa0_rate"], age[j, "pa10_rate"], age[j, "pa20_rate"], age[j, "pa30_rate"], age[j, "pa40_rate"], age[j, "pa50_rate"], age[j, "pa60_rate"], age[j, "pa70_rate"], age[j, "pa80_rate"], age[j, "pa90_rate"], age[j, "paX_rate"]),
-                 check.names=FALSE)
-    }, rownames=TRUE)
-    
-    # Medical information
-    output$t_medical <- renderText({
-      "Condições médicas pré-existentes"
-    })
-    output$medical <- renderTable({
-      data.frame(row.names = c("Asma", "Cardiopatia", "Diabetes", "Doença Hematológica", "Doença Hepática", "Doença Neurológica", "Doença Renal", "Imunodepressão", "Obesidade", "Pneumopatia", "Puérpera", "Síndrome de Down", "Outros", "Nenhuma condição pré-existente"),
-                 "Casos"=c(medical[j, "asm"], medical[j, "crd"], medical[j, "dia"], medical[j, "hem"], medical[j, "hep"], medical[j, "neu"], medical[j, "ren"], medical[j, "imu"], medical[j, "obs"], medical[j, "pne"], medical[j, "pue"], medical[j, "dow"], medical[j, "out"], medical[j, "ncp"]), 
-                 'Casos %'=c(medical[j, "pasm"], medical[j, "pcrd"], medical[j, "pdia"], medical[j, "phem"], medical[j, "phep"], medical[j, "pneu"], medical[j, "pren"], medical[j, "pimu"], medical[j, "pobs"], medical[j, "ppne"], medical[j, "ppue"], medical[j, "pdow"], medical[j, "pout"], medical[j, "pncp"]),
-                 "Óbitos"=c(medical[j, "asm_obitos"], medical[j, "crd_obitos"], medical[j, "dia_obitos"], medical[j, "hem_obitos"], medical[j, "hep_obitos"], medical[j, "neu_obitos"], medical[j, "ren_obitos"], medical[j, "imu_obitos"], medical[j, "obs_obitos"], medical[j, "pne_obitos"], medical[j, "pue_obitos"], medical[j, "dow_obitos"], medical[j, "out_obitos"], medical[j, "ncp_obitos"]),
-                 'Óbitos %'=c(medical[j, "pasm_obitos"], medical[j, "pcrd_obitos"], medical[j, "pdia_obitos"], medical[j, "phem_obitos"], medical[j, "phep_obitos"], medical[j, "pneu_obitos"], medical[j, "pren_obitos"], medical[j, "pimu_obitos"], medical[j, "pobs_obitos"], medical[j, "ppne_obitos"], medical[j, "ppue_obitos"], medical[j, "pdow_obitos"], medical[j, "pout_obitos"], medical[j, "pncp_obitos"]), 
-                 'Mortalidade %'=c(medical[j, "pasm_rate"], medical[j, "pcrd_rate"], medical[j, "pdia_rate"], medical[j, "phem_rate"], medical[j, "phep_rate"], medical[j, "pneu_rate"], medical[j, "pren_rate"], medical[j, "pimu_rate"], medical[j, "pobs_rate"], medical[j, "ppne_rate"], medical[j, "ppue_rate"], medical[j, "pdow_rate"], medical[j, "pout_rate"], medical[j, "pncp_rate"]), 
-                 check.names=FALSE)
-    }, rownames=TRUE)
-    
-    output$t_medical2 <- renderText({
-      "Número de condições médicas pré-existentes"
-    })
-    output$medical2 <- renderTable({
-      data.frame(row.names = c("Nenhuma", "1", "2", "3", "4 ou mais"),
-                 "Casos"=c(medical[j, "m0"], medical[j, "m1"], medical[j, "m2"], medical[j, "m3"], medical[j, "m4"]), 
-                 'Casos %'=c(medical[j, "pm0"], medical[j, "pm1"], medical[j, "pm2"], medical[j, "pm3"], medical[j, "pm4"]),
-                 "Óbitos"=c(medical[j, "m0_obitos"], medical[j, "m1_obitos"], medical[j, "m2_obitos"], medical[j, "m3_obitos"], medical[j, "m4_obitos"]),
-                 'Óbitos %'=c(medical[j, "pm0_obitos"], medical[j, "pm1_obitos"], medical[j, "pm2_obitos"], medical[j, "pm3_obitos"], medical[j, "pm4_obitos"]), 
-                 'Mortalidade %'=c(medical[j, "pm0_rate"], medical[j, "pm1_rate"], medical[j, "pm2_rate"], medical[j, "pm3_rate"], medical[j, "pm4_rate"]),
-                 check.names=FALSE)
-    }, rownames=TRUE)
+    if (identical(input$city, "Estado")){
+      j <- 1
+      
+      output$title <- renderText({
+        paste("Dados totais do Estado de São Paulo em ", as.character(day, "%d/%m/%Y"))
+      })
+      output$general <- renderTable({
+        s_general
+      })
+      
+      # Gender
+      output$t_gender <- renderText({
+        "Dados por sexo"
+      })
+      output$gender <- renderTable({
+        s_gender
+      }, rownames=TRUE)
+      
+      # Age
+      output$t_age <- renderText({
+        "Dados por idade"
+      })
+      output$age <- renderTable({
+        s_age
+      }, rownames=TRUE)
+      
+      # Medical information
+      output$t_medical <- renderText({
+        "Condições médicas pré-existentes"
+      })
+      output$medical <- renderTable({
+        s_medical
+      }, rownames=TRUE)
+      
+      output$t_medical2 <- renderText({
+        "Número de condições médicas pré-existentes"
+      })
+      output$medical2 <- renderTable({
+        s_nmedical
+      }, rownames=TRUE)
+    }
+    else {
+      # Get data
+      j <- match(input$city, cities)
+      
+      # General
+      output$title <- renderText({
+        paste("Dados de ", input$city, " em ", as.character(day, "%d/%m/%Y"))
+      })
+      output$general <- renderTable({
+        data.frame("Casos"=general[j, "casos"], "Óbitos"=general[j, "obitos"])
+      })
+      
+      # Gender
+      output$t_gender <- renderText({
+        "Dados por sexo"
+      })
+      output$gender <- renderTable({
+        data.frame(row.names = c("Masculino", "Feminino"), 
+                   "Casos"=c(gender[j, "m_casos"], gender[j, "f_casos"]), 
+                   'Casos %'=c(gender[j, "m_pcasos"], gender[j, "f_pcasos"]),
+                   "Óbitos"=c(gender[j, "m_obitos"], gender[j, "f_obitos"]),
+                   'Óbitos %'=c(gender[j, "m_pobitos"], gender[j, "f_pobitos"]),
+                   'Mortalidade %'=c(gender[j, "m_rate"], gender[j, "f_rate"]), 
+                   check.names=FALSE)
+      }, rownames=TRUE)
+      
+      # Age
+      output$t_age <- renderText({
+        "Dados por idade"
+      })
+      output$age <- renderTable({
+        data.frame(row.names = c("0 a 9", "10 a 19", "20 a 29", "30 a 39", "40 a 49", "50 a 59", "60 a 69", "70 a 79", "80 a 89", "90 ou mais", "Sem idade declarada"),
+                   "Casos"=c(age[j, "a0"], age[j, "a10"], age[j, "a20"], age[j, "a30"], age[j, "a40"], age[j, "a50"], age[j, "a60"], age[j, "a70"], age[j, "a80"], age[j, "a90"], age[j, "aX"]), 
+                   'Casos %'=c(age[j, "pa0"], age[j, "pa10"], age[j, "pa20"], age[j, "pa30"], age[j, "pa40"], age[j, "pa50"], age[j, "pa60"], age[j, "pa70"], age[j, "pa80"], age[j, "pa90"], age[j, "paX"]),
+                   "Óbitos"=c(age[j, "a0_obitos"], age[j, "a10_obitos"], age[j, "a20_obitos"], age[j, "a30_obitos"], age[j, "a40_obitos"], age[j, "a50_obitos"], age[j, "a60_obitos"], age[j, "a70_obitos"], age[j, "a80_obitos"], age[j, "a90_obitos"], age[j, "aX_obitos"]),
+                   'Óbitos %'=c(age[j, "pa0_obitos"], age[j, "pa10_obitos"], age[j, "pa20_obitos"], age[j, "pa30_obitos"], age[j, "pa40_obitos"], age[j, "pa50_obitos"], age[j, "pa60_obitos"], age[j, "pa70_obitos"], age[j, "pa80_obitos"], age[j, "pa90_obitos"], age[j, "paX_obitos"]),
+                   'Mortalidade %'=c(age[j, "pa0_rate"], age[j, "pa10_rate"], age[j, "pa20_rate"], age[j, "pa30_rate"], age[j, "pa40_rate"], age[j, "pa50_rate"], age[j, "pa60_rate"], age[j, "pa70_rate"], age[j, "pa80_rate"], age[j, "pa90_rate"], age[j, "paX_rate"]),
+                   check.names=FALSE)
+      }, rownames=TRUE)
+      
+      # Medical information
+      output$t_medical <- renderText({
+        "Condições médicas pré-existentes"
+      })
+      output$medical <- renderTable({
+        data.frame(row.names = c("Asma", "Cardiopatia", "Diabetes", "Doença Hematológica", "Doença Hepática", "Doença Neurológica", "Doença Renal", "Imunodepressão", "Obesidade", "Pneumopatia", "Puérpera", "Síndrome de Down", "Outros", "Nenhuma condição pré-existente"),
+                   "Casos"=c(medical[j, "asm"], medical[j, "crd"], medical[j, "dia"], medical[j, "hem"], medical[j, "hep"], medical[j, "neu"], medical[j, "ren"], medical[j, "imu"], medical[j, "obs"], medical[j, "pne"], medical[j, "pue"], medical[j, "dow"], medical[j, "out"], medical[j, "ncp"]), 
+                   'Casos %'=c(medical[j, "pasm"], medical[j, "pcrd"], medical[j, "pdia"], medical[j, "phem"], medical[j, "phep"], medical[j, "pneu"], medical[j, "pren"], medical[j, "pimu"], medical[j, "pobs"], medical[j, "ppne"], medical[j, "ppue"], medical[j, "pdow"], medical[j, "pout"], medical[j, "pncp"]),
+                   "Óbitos"=c(medical[j, "asm_obitos"], medical[j, "crd_obitos"], medical[j, "dia_obitos"], medical[j, "hem_obitos"], medical[j, "hep_obitos"], medical[j, "neu_obitos"], medical[j, "ren_obitos"], medical[j, "imu_obitos"], medical[j, "obs_obitos"], medical[j, "pne_obitos"], medical[j, "pue_obitos"], medical[j, "dow_obitos"], medical[j, "out_obitos"], medical[j, "ncp_obitos"]),
+                   'Óbitos %'=c(medical[j, "pasm_obitos"], medical[j, "pcrd_obitos"], medical[j, "pdia_obitos"], medical[j, "phem_obitos"], medical[j, "phep_obitos"], medical[j, "pneu_obitos"], medical[j, "pren_obitos"], medical[j, "pimu_obitos"], medical[j, "pobs_obitos"], medical[j, "ppne_obitos"], medical[j, "ppue_obitos"], medical[j, "pdow_obitos"], medical[j, "pout_obitos"], medical[j, "pncp_obitos"]), 
+                   'Mortalidade %'=c(medical[j, "pasm_rate"], medical[j, "pcrd_rate"], medical[j, "pdia_rate"], medical[j, "phem_rate"], medical[j, "phep_rate"], medical[j, "pneu_rate"], medical[j, "pren_rate"], medical[j, "pimu_rate"], medical[j, "pobs_rate"], medical[j, "ppne_rate"], medical[j, "ppue_rate"], medical[j, "pdow_rate"], medical[j, "pout_rate"], medical[j, "pncp_rate"]), 
+                   check.names=FALSE)
+      }, rownames=TRUE)
+      
+      output$t_medical2 <- renderText({
+        "Número de condições médicas pré-existentes"
+      })
+      output$medical2 <- renderTable({
+        data.frame(row.names = c("Nenhuma", "1", "2", "3", "4 ou mais"),
+                   "Casos"=c(medical[j, "m0"], medical[j, "m1"], medical[j, "m2"], medical[j, "m3"], medical[j, "m4"]), 
+                   'Casos %'=c(medical[j, "pm0"], medical[j, "pm1"], medical[j, "pm2"], medical[j, "pm3"], medical[j, "pm4"]),
+                   "Óbitos"=c(medical[j, "m0_obitos"], medical[j, "m1_obitos"], medical[j, "m2_obitos"], medical[j, "m3_obitos"], medical[j, "m4_obitos"]),
+                   'Óbitos %'=c(medical[j, "pm0_obitos"], medical[j, "pm1_obitos"], medical[j, "pm2_obitos"], medical[j, "pm3_obitos"], medical[j, "pm4_obitos"]), 
+                   'Mortalidade %'=c(medical[j, "pm0_rate"], medical[j, "pm1_rate"], medical[j, "pm2_rate"], medical[j, "pm3_rate"], medical[j, "pm4_rate"]),
+                   check.names=FALSE)
+      }, rownames=TRUE)
+    }
   })
 }
 

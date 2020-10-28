@@ -65,7 +65,7 @@ echo
 # Loop forever
 while true; do
   now=`date`
-  if [[ "$last" != "$now" ]]; then
+  if [ "$now" != "" ] && [ "$last" != "$now" ]; then
     stop
     start
     last=$now
