@@ -20,9 +20,9 @@ function start {
   cp casos_obitos_doencas_preexistentes.csv.zip /tmp
   cd /tmp
   unzip casos_obitos_doencas_preexistentes.csv.zip
-  cp home/lasagna/dados-covid-sp/data/casos_obitos_doencas_preexistentes.csv $dir
+  cp casos_obitos_doencas_preexistentes.csv $dir
   rm casos_obitos_doencas_preexistentes.csv.zip
-  rm -r home
+  rm casos_obitos_doencas_preexistentes.csv
   cd $dir
   rm casos_obitos_doencas_preexistentes.csv.zip
   
