@@ -182,11 +182,13 @@ ui <- fluidPage(
   textOutput("deathdense"),
   
   plotOutput("p_cases"),
+  div(style = 'overflow-x: scroll', tableOutput("w_cases")),
   textOutput("t_cases"),
   textOutput("z_cases"),
   textOutput("d_cases"),
   
   plotOutput("p_death"),
+  div(style = 'overflow-x: scroll', tableOutput("w_death")),
   textOutput("t_death"),
   textOutput("z_death"),
   textOutput("d_death"),
@@ -242,6 +244,20 @@ server <- function(input, output, session) {
       paste("Densidade de óbitos:", format(round(cdata[[j]][days, "obitos"] / area[j], 5), nsmall = 5), "óbitos/Km2.")
     })
     
+    # Table
+    week_cases <- data.frame(matrix(0, nrow = 1, ncol = 15))
+    week_death <- data.frame(matrix(0, nrow = 1, ncol = 15))
+    for (w in 0:14) {
+      ww = w + 1
+      wd = days - w
+      
+      names(week_cases)[ww] <- as.character(cdata[[j]]$data[wd], "%d/%m/%y")
+      week_cases[1,ww] <- cdata[[j]]$casos_novos[wd]
+      
+      names(week_death)[ww] <- as.character(cdata[[j]]$data[wd], "%d/%m/%y")
+      week_death[1,ww] <- cdata[[j]]$obitos_novos[wd]
+    }
+    
     # Cases
     casemax <- which.max(cdata[[j]]$casos_novos)
     diffcase <- caseavg[[j]][days] - caseavg[[j]][days - 7]
@@ -249,6 +265,11 @@ server <- function(input, output, session) {
       plot(cdata[[j]]$data, cdata[[j]]$casos_novos, type = "h", main = "Novos casos por dia", xlab = NA, ylab = NA, col="blue")
       lines(cdata[[j]]$data, caseavg[[j]], col="red")
     })
+
+    output$w_cases <- renderTable({
+      week_cases
+    })
+    
     output$t_cases <- renderText({
       paste("O maior número de novos casos novos foi de ", cdata[[j]][casemax, "casos_novos"], "em", as.character(cdata[[j]][casemax, "data"], "%d/%m/%Y"), ".")
     })
@@ -293,6 +314,11 @@ server <- function(input, output, session) {
       plot(cdata[[j]]$data, cdata[[j]]$obitos_novos, type = "h", main = "Novos óbitos por dia", xlab = NA, ylab = NA, col="blue")
       lines(cdata[[j]]$data, deathavg[[j]], col="red")
     })
+    
+    output$w_death <- renderTable({
+      week_death
+    })
+    
     output$t_death <- renderText({
       paste("O maior número de novos óbitos foi de ", cdata[[j]][deathmax, "obitos_novos"], "em", as.character(cdata[[j]][deathmax, "data"], "%d/%m/%Y"), ".")
     })
