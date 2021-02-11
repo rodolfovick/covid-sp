@@ -8,7 +8,7 @@ n <- length(cities)
 
 file <- read.csv("casos_obitos_doencas_preexistentes.csv", sep=";")
 
-general <- data.frame("casos"=integer(n), "obitos"=integer(n))
+general <- data.frame("casos"=integer(n), "obitos"=integer(n), "mortalidade"=numeric(n))
 
 gender <- data.frame("m_casos"=integer(n), "m_obitos"=integer(n), "m_pcasos"=numeric(n), "m_pobitos"=numeric(n), "m_rate"=numeric(n),
                      "f_casos"=integer(n), "f_obitos"=integer(n), "f_pcasos"=numeric(n), "f_pobitos"=numeric(n), "f_rate"=numeric(n))
@@ -331,6 +331,8 @@ for (i in 1:nrow(file)) {
 
 for (j in 1:n) {
   # Update percentages
+  general[j, "mortalidade"] <- general[j, "obitos"] / general[j, "casos"] * 100
+  
   gender[j, "m_pcasos"] <- gender[j, "m_casos"] / general[j, "casos"] * 100
   gender[j, "m_pobitos"] <- gender[j, "m_obitos"] / general[j, "obitos"] * 100
   gender[j, "m_rate"] <- gender[j, "m_obitos"] / gender[j, "m_casos"] * 100
@@ -434,7 +436,10 @@ for (j in 1:n) {
 }
 
 # State data
-s_general <- data.frame("Casos"=sum(general$casos), "Óbitos"=sum(general$obitos))
+s_general <- data.frame("Casos"=sum(general$casos), 
+                        "Óbitos"=sum(general$obitos), 
+                        "Mortalidade %"=sum(general$obitos)/sum(general$casos)*100, 
+                        check.names=FALSE)
 s_gender <- data.frame(row.names = c("Masculino", "Feminino"),
                        "Casos"=c(sum(gender$m_casos), sum(gender$f_casos)),
                        'Casos %'=c(sum(gender$m_casos)*100/s_general$Casos, sum(gender$f_casos)*100/s_general$Casos),
@@ -548,7 +553,10 @@ server <- function(input, output, session) {
         paste("Dados de ", input$city, " em ", as.character(day, "%d/%m/%Y"))
       })
       output$general <- renderTable({
-        data.frame("Casos"=general[j, "casos"], "Óbitos"=general[j, "obitos"])
+        data.frame("Casos"=general[j, "casos"], 
+                   "Óbitos"=general[j, "obitos"], 
+                   "Mortalidade %"=general[j, "mortalidade"],
+                   check.names=FALSE)
       })
       
       # Gender
